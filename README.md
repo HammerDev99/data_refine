@@ -355,47 +355,19 @@ El ranking de productos muestra decrecimiento gradual (Door ~$9.5M → Worry ~$5
 
 ## ▶️ Cómo reproducir
 
-### Requisitos
-- [OpenRefine 3.7+](https://openrefine.org/download)
-- [Power BI Desktop](https://powerbi.microsoft.com/es-es/desktop/) (versión 2024 o superior)
+El paso a paso completo está documentado en la guía maestra del proyecto:
 
-### Paso 1 — ETL en OpenRefine
+📄 **[`Arbelaez_Daniel_Actividad_Visualizacion.md`](./Arbelaez_Daniel_Actividad_Visualizacion.md)**
 
-```bash
-# 1. Inicia OpenRefine (por defecto en http://127.0.0.1:3333)
-# 2. Crea un nuevo proyecto con assets/dataset/raw/datos_ventas.csv
-# 3. Encoding: UTF-8 | Separador: coma | Primera fila como encabezado
-```
+La guía cubre en detalle:
 
-Aplica las transformaciones en este orden:
-1. **Fase 1:** Text Facets en Categoria, Ciudad, Metodo_Pago, Estado
-2. **Fase 2:** Trim → Replace spaces → toTitlecase → toLowercase → regex chars
-3. **Fase 3:** Cluster en Categoria (Fingerprint) y Email (n-Gram)
-4. **Fase 4:** `To date` en Fecha_Venta + GREL de nulos en Comentario
-5. **Fase 5:** Remove All → Export CSV UTF-8
+- **Portada y metadatos** del proyecto
+- **Sección 1** — Descripción del dataset: origen, dimensiones y columnas
+- **Sección 2 — Fase 1 (OpenRefine):** las 5 fases del pipeline ETL con comandos GREL exactos, capturas de cada transformación y justificación técnica de cada decisión
+- **Sección 3 — Fase 2 (Power BI):** importación en Power Query, creación de la tabla Calendario, las 3 medidas DAX, los 5 ajustes de modelado encontrados y corregidos, y la descripción de cada visualización con principios de Gestalt aplicados
+- **Sección 4** — Análisis e interpretación de resultados con hallazgos concretos basados en los datos
 
-El dataset limpio resultante debe coincidir con `assets/dataset/clean/datos-ventas-csv.csv`.
-
-### Paso 2 — Power BI
-
-```
-1. Abrir assets/dashboard/Visualización de evolución en el tiempo.pbix
-   — O importar assets/dataset/clean/datos-ventas-csv.csv desde cero
-2. En Power Query: verificar que Fecha_Venta sea tipo "Fecha" (no Fecha/Hora)
-3. Crear tabla Calendario con el código DAX proporcionado
-4. Marcar Calendario como tabla de fechas (columna: Date)
-5. Crear relación Calendario[Date] → Ventas[Fecha_Venta]
-6. Crear las 3 medidas DAX en la tabla Ventas
-7. Construir las 5 visualizaciones según la especificación
-```
-
-### Paso 3 — Verificación del modelo
-
-Antes de construir los gráficos, insertar una **Tabla** de verificación con:
-```
-NombreMes | Ingresos_Totales | Variacion_vs_PeriodoAnterior
-```
-Si `NombreMes` muestra meses individuales (no una sola fila en blanco), el modelo está correctamente configurado.
+Cada paso incluye la ruta de menú o expresión GREL/DAX, la justificación lógica de por qué se aplicó, y la captura de pantalla que evidencia el resultado.
 
 ---
 
